@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+  head
+    title Names
+  body
+    header
+      h1 Names
+    section#namesTable
+      table
+        tr
+          th First Name
+          th Last Name
+        each name in names
+          tr
+            td= name.first
+            td= name.last
+    footer
+    p An app to list Names on a page...

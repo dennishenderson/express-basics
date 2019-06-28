@@ -2,14 +2,39 @@ const express = require('express');
 
 const app = express();
 
+const names = [
+    {
+        first: "Dennis",
+        last: "Henderson",
+    },
+    {
+        first: "Jennifer",
+        last: "Henderson"
+    },
+    {
+        first: "Zachariah",
+        last: "Henderson"
+    },
+    {
+        first: "Elijah",
+        last: "Henderson"
+    }
+];
+
+app.set('view engine', 'pug');
+
 app.get('/', (req, res) => {
-    res.send('<h1>I love Treehouse!</h1>');
+  res.render('index');
 });
 
-app.get('/hello', (req, res) => {
-    res.send('<h1>Hello, JavaScript Developer!</h1>');
+app.get('/cards', (req, res) => {
+  res.render('card', {prompt: "Who is buried in Grant's tomb?"});
+});
+
+app.get('/names', (req, res) => {
+  res.render('names', {names});
 });
 
 app.listen(3000, () => {
-    console.log('The application is runnong on localhost:3000!')
+  console.log('The application is runnong on localhost:3000!')
 });
