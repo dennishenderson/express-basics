@@ -1,52 +1,46 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
-const names = [
-    {
-        first: "Dennis",
-        last: "Henderson",
-    },
-    {
-        first: "Jennifer",
-        last: "Henderson"
-    },
-    {
-        first: "Zachariah",
-        last: "Henderson"
-    },
-    {
-        first: "Elijah",
-        last: "Henderson"
-    }
-];
-
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(cookieParser());
 
 app.set('view engine', 'pug');
 
 app.get('/', (req, res) => {
-  res.render('index');
+    const name = req.cookies.username;
+    if (name === undefined) {
+        res.redirect('/hello');
+    } else {
+        res.render('index', {name});
+    }
 });
 
 app.get('/cards', (req, res) => {
-  res.render('card', {prompt: "Who is buried in Grant's tomb?"});
-});
-
-app.get('/names', (req, res) => {
-  res.render('names', {names});
+    res.render('card', {prompt: "Who is buried in Grant's tomb?"});
 });
 
 app.get('/hello', (req, res) => {
-  res.render('hello');
+    const name = req.cookies.username;
+    if (name) {
+        res.redirect('/');
+    } else {
+        res.render('hello');
+    }
 });
 
 app.post('/hello', (req, res) => {
-  console.dir(req.body);
-  res.render('hello');
+    res.cookie('username', req.body.username);
+    res.redirect('/');
+});
+
+app.post('/goodbye', (req, res) => {
+    res.clearCookie('username');
+    res.redirect('/hello');
 });
 
 app.listen(3000, () => {
-  console.log('The application is runnong on localhost:3000!')
+    console.log('The application is runnong on localhost:3000!');
 });
