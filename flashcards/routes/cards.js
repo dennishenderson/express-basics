@@ -6,7 +6,7 @@ const {cards} = data; // {cards} is the equivalent of data.cards
 router.get('/', (req, res) => {
   const numberOfCards = cards.length;
   const flashcardId = Math.floor(Math.random() * numberOfCards);
-  res.redirect(`/cards/${flashcardId}?side=question`);
+  res.redirect(`/cards/${flashcardId}`);
 })
 
 router.get('/:id', (req, res) => {
@@ -14,7 +14,7 @@ router.get('/:id', (req, res) => {
   const {id} = req.params;
 
   if (!side) {
-    res.redirect(`/cards/${id}?side=question`);
+    return res.redirect(`/cards/${id}?side=question`);
   }
 
   const name = req.cookies.username;
